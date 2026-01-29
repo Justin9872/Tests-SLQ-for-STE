@@ -4,7 +4,7 @@ function [Im,theta,tau,T] = Lanczos_Quadrature(A, u, m)
 % quadratic form with respect to exponential matrix, expm(A).
 %
 %  Input:
-%  A: positive semi-definite matrix
+%  A: symmetric matrix
 %  u: initial vector
 %  m: Lanczos iteration steps
 %
@@ -15,10 +15,11 @@ function [Im,theta,tau,T] = Lanczos_Quadrature(A, u, m)
 %  T: symmetric tridiagonal matrix
 %
 %  Usage (example):
-%  A = gallery('wathen',10,10); u = ones(length(A),1); 
-%  [Im, ~, ~, T] = Lanczos_Quadrature(A,u,100);
+%  A = gallery('wathen',10,10); u = ones(length(A),1); m = 100;
+%  [Im, ~, ~, T] = Lanczos_Quadrature(A,u,m);
 %
 %  Copyright: Shengxin Zhu, Beijing Normal University
+%             Wenhao Li, Beijing Normal-Hongkong Baptist University
 
 n = length(A);
 alpha = zeros(m,1);
