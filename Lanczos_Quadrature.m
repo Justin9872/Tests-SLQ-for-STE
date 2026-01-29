@@ -14,6 +14,9 @@ function [Im,theta,tau,T] = Lanczos_Quadrature(A, u, m)
 %  tau: Gaussian quadrature weights
 %  T: symmetric tridiagonal matrix
 %
+%  Note: We do not apply re-orthogonalization here. One may add Gram-Schmidt
+%  process after line 37 if necessary.
+%
 %  Usage (example):
 %  A = gallery('wathen',10,10); u = ones(length(A),1); m = 100;
 %  [Im, ~, ~, T] = Lanczos_Quadrature(A,u,m);
@@ -47,3 +50,4 @@ T = diag(alpha) + diag(beta(2:end-1),1) + diag(beta(2:end-1),-1);
 theta = diag(D);
 tau = V(1,:).^2;
 Im = tau*exp(theta)*normu^2;
+
