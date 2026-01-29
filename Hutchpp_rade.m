@@ -1,6 +1,6 @@
-function approx_logdet = Hutchpp_rade(A,num_iterations,num_queries)
+function approx_EstradaIndex = Hutchpp_rade(A,num_iterations,num_queries)
 dim = size(A,1);
-Function = @(B) lanczosfAB(A, B, num_iterations);
+Function = @(B) LanczosExpAB(A, B, num_iterations);
 
 
 sketch_frac = 1/3;
@@ -19,5 +19,5 @@ G = G - Q*(Q' * G);
 
 
 % Compute Hutch++ Estimate value
-approx_logdet = trace(Q' * Function(Q)) + ...
+approx_EstradaIndex = trace(Q' * Function(Q)) + ...
      (Stochastic_Lanczos_Quadrature(A,G,num_iterations));
