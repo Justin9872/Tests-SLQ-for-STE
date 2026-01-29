@@ -1,7 +1,462 @@
+%% Section 5.1
+% case 1:
+dim = 50;
+d = zeros(dim,1);
+for i = 1:dim
+    d(i) = i/dim;
+end
+A = generate_full_matrix(dim,d);
+
+b = ones(dim,1)/sqrt(dim);
+m = 10;                
+beta = zeros(m,1);
+alpha = zeros(m,1);
+
+K = zeros(dim,m+1);
+
+K(:,1) = b/norm(b);
+K(:,2) = A*K(:,1);
+alpha(1) = sum(K(:,2).*K(:,1));
+
+for i = 1:m-1
+	K(:,i+1) = K(:,i+1) - K(:,i).*alpha(i);
+	beta(i+1) = sqrt(sum(K(:,i+1).*K(:,i+1)));
+	K(:,i+1) = K(:,i+1)./beta(i+1);
+	K(:,i+2) = A*K(:,i+1) - K(:,i).*beta(i+1);
+	alpha(i+1) = sum(K(:,i+2).*K(:,i+1));
+end
+
+T1 = diag(alpha) + diag(beta(2:end),1) + diag(beta(2:end),-1);
+[~,D1] = eig(T1);
+D1 = diag(D1);
+
+lambdaM = D1(10);
+lambdam = D1(1);
+
+x = ones(1,dim);
+x = x./norm(x);
+H = eye(dim,dim) - 2 * (x' * x);
+mu = H'*b;
+mu2 = zeros(dim,1);
+mu2(1) = mu(1)^2;
+for i = 2:dim
+    mu2(i) = mu(i)^2 + mu2(i-1);
+end
+
+index1 = find(D1 > (lambdaM+lambdam)/2, 1);
+D1_n = D1(1: index1 - 1);
+D1_p = D1(index1:10);
+
+subplot(2,1,1);
+stairs([0;d],[0;mu2(1:dim,1)]);
+set(gca, 'FontSize', 16);
+ylim([0,1]);
+xlabel("$t$",Interpreter = 'latex');
+ylabel("$\mu(t)$",Interpreter = 'latex')
+
+
+subplot(2,1,2);
+p_1_n = plot(D1_n,zeros(index1 - 1), '.r', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+legend([p_1_n(1), p_1_p(1)], '5 nodes $<(\theta_{1}+\theta_{10})/2$', '5 nodes $>(\theta_{1}+\theta_{10})/2$', 'Orientation', 'horizontal', 'Interpreter', 'latex');
+hold on;
+grid on;
+bar = ['$$\bar{\lambda}$$'];
+set(gca, "FontSize", 16);
+set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
+s =set(gca, 'XTicklabel', { '$\theta_{1}$','$(\theta_{1} + \theta_{10})/2$','$\theta_{10}$'}, 'TickLabelInterpreter', 'latex');
+set(gca, 'YTick', [0]);
+xlabel("Ritz values $\theta$", Interpreter='latex');
+hold off;
+
+% case 2:
+clear;
+dim = 50;
+d = zeros(dim,1);
+for i = 1:dim
+    d(i) = 1/(dim+1-i);
+end
+A = generate_full_matrix(dim,d);
+
+b = ones(dim,1)/sqrt(dim);
+m = 10;                
+beta = zeros(m,1);
+alpha = zeros(m,1);
+
+K = zeros(dim,m+1);
+
+K(:,1) = b/norm(b);
+K(:,2) = A*K(:,1);
+alpha(1) = sum(K(:,2).*K(:,1));
+
+for i = 1:m-1
+	K(:,i+1) = K(:,i+1) - K(:,i).*alpha(i);
+	beta(i+1) = sqrt(sum(K(:,i+1).*K(:,i+1)));
+	K(:,i+1) = K(:,i+1)./beta(i+1);
+	K(:,i+2) = A*K(:,i+1) - K(:,i).*beta(i+1);
+	alpha(i+1) = sum(K(:,i+2).*K(:,i+1));
+end
+
+T1 = diag(alpha) + diag(beta(2:end),1) + diag(beta(2:end),-1);
+[~,D1] = eig(T1);
+D1 = diag(D1);
+
+lambdaM = D1(10);
+lambdam = D1(1);
+
+x = ones(1,dim);
+x = x./norm(x);
+H = eye(dim,dim) - 2 * (x' * x);
+mu = H'*b;
+mu2 = zeros(dim,1);
+mu2(1) = mu(1)^2;
+for i = 2:dim
+    mu2(i) = mu(i)^2 + mu2(i-1);
+end
+
+index1 = find(D1 > (lambdaM+lambdam)/2, 1);
+D1_n = D1(1: index1 - 1);
+D1_p = D1(index1:10);
+
+subplot(2,1,1);
+stairs([0;d],[0;mu2(1:dim,1)]);
+set(gca, 'FontSize', 16);
+ylim([0,1]);
+xlabel("$t$",Interpreter = 'latex');
+ylabel("$\mu(t)$",Interpreter = 'latex')
+
+
+subplot(2,1,2);
+p_1_n = plot(D1_n,zeros(index1 - 1), '.r', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+legend([p_1_n(1), p_1_p(1)], '9 nodes $<(\theta_{1}+\theta_{10})/2$', '1 node $>(\theta_{1}+\theta_{10})/2$', 'Orientation', 'horizontal','Interpreter', 'latex');
+hold on;
+grid on;
+bar = ['$$\bar{\lambda}$$'];
+set(gca, "FontSize", 16);
+set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
+s =set(gca, 'XTicklabel', { '$\theta_{1}$','$(\theta_{1} + \theta_{10})/2$','$\theta_{10}$'}, 'TickLabelInterpreter', 'latex');
+set(gca, 'YTick', [0]);
+xlabel("Ritz values $\theta$", Interpreter='latex');
+hold off;
+
+% case 3:
+clear;
+dim = 50;
+d = zeros(dim,1);
+for i = 1:dim
+    d(i) = i/dim;
+end
+A = generate_full_matrix(dim,d);
+
+b = (1:1:50)';
+b = b/norm(b);
+m = 10;                
+beta = zeros(m,1);
+alpha = zeros(m,1);
+
+K = zeros(dim,m+1);
+
+K(:,1) = b/norm(b);
+K(:,2) = A*K(:,1);
+alpha(1) = sum(K(:,2).*K(:,1));
+
+for i = 1:m-1
+	K(:,i+1) = K(:,i+1) - K(:,i).*alpha(i);
+	beta(i+1) = sqrt(sum(K(:,i+1).*K(:,i+1)));
+	K(:,i+1) = K(:,i+1)./beta(i+1);
+	K(:,i+2) = A*K(:,i+1) - K(:,i).*beta(i+1);
+	alpha(i+1) = sum(K(:,i+2).*K(:,i+1));
+end
+
+T1 = diag(alpha) + diag(beta(2:end),1) + diag(beta(2:end),-1);
+[~,D1] = eig(T1);
+D1 = diag(D1);
+
+lambdaM = D1(10);
+lambdam = D1(1);
+
+x = ones(1,dim);
+x = x./norm(x);
+H = eye(dim,dim) - 2 * (x' * x);
+mu = H'*b;
+mu2 = zeros(dim,1);
+mu2(1) = mu(1)^2;
+for i = 2:dim
+    mu2(i) = mu(i)^2 + mu2(i-1);
+end
+
+index1 = find(D1 > (lambdaM+lambdam)/2, 1);
+D1_n = D1(1: index1 - 1);
+D1_p = D1(index1:10);
+
+subplot(2,1,1);
+stairs([0;d],[0;mu2(1:dim,1)]);
+set(gca, 'FontSize', 16);
+ylim([0,1]);
+xlabel("$t$",Interpreter = 'latex');
+ylabel("$\mu(t)$",Interpreter = 'latex')
+
+subplot(2,1,2);
+p_1_n = plot(D1_n,zeros(index1 - 1), '.r', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+legend([p_1_n(1), p_1_p(1)], '5 nodes $<(\theta_{1}+\theta_{10})/2$', '5 nodes $>(\theta_{1}+\theta_{10})/2$', 'Orientation', 'horizontal','Interpreter', 'latex');
+hold on;
+grid on;
+bar = ['$$\bar{\lambda}$$'];
+set(gca, "FontSize", 16);
+set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
+s =set(gca, 'XTicklabel', { '$\theta_{1}$','$(\theta_{1} + \theta_{10})/2$','$\theta_{10}$'}, 'TickLabelInterpreter', 'latex');
+set(gca, 'YTick', [0]);
+xlabel("Ritz values $\theta$", Interpreter='latex');
+hold off;
+
+% case 4:
+
+clear;
+load('nd3k.mat');
+A = Problem.A;
+dim = size(A,1);
+
+% Rademacher vector
+
+b = ones(dim,1);       
+b(dim/2+1:end) = -1 * ones(dim/2,1);
+b = b/norm(b);
+
+m = 10;                
+beta = zeros(m,1);
+alpha = zeros(m,1);
+
+K = zeros(dim,m+1);
+
+K(:,1) = b/norm(b);
+K(:,2) = A*K(:,1);
+alpha(1) = sum(K(:,2).*K(:,1));
+
+for i = 1:m-1
+	K(:,i+1) = K(:,i+1) - K(:,i).*alpha(i);
+	beta(i+1) = sqrt(sum(K(:,i+1).*K(:,i+1)));
+	K(:,i+1) = K(:,i+1)./beta(i+1);
+	K(:,i+2) = A*K(:,i+1) - K(:,i).*beta(i+1);
+	alpha(i+1) = sum(K(:,i+2).*K(:,i+1));
+end
+
+T1 = diag(alpha) + diag(beta(2:end),1) + diag(beta(2:end),-1);
+[~,D1] = eig(T1);
+D1 = diag(D1);
+
+lambdaM = D1(10);
+lambdam = D1(1);
+
+[Q,D] = eig(full(A));
+mu = Q'*b;
+mu2 = zeros(dim);
+mu2(1) = mu(1)^2;
+for i = 2:dim
+    mu2(i) = mu(i)^2 + mu2(i-1);
+end
+
+index1 = find(D1 > (lambdaM+lambdam)/2, 1);
+D1_n = D1(1: index1 - 1);
+D1_p = D1(index1:10);
+
+subplot(2,1,1);
+stairs([0;diag(D)],[0;mu2(1:dim,1)]);
+set(gca, 'FontSize', 16);
+ylim([0,1]);
+xlabel("$t$",Interpreter = 'latex');
+ylabel("$\mu(t)$",Interpreter = 'latex')
+
+subplot(2,1,2);
+p_1_n = plot(D1_n,zeros(index1 - 1), '.r', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+legend([p_1_n(1), p_1_p(1)], '5 nodes $<(\theta_{1}+\theta_{10})/2$', '5 nodes $>(\theta_{1}+\theta_{10})/2$', 'Orientation', 'horizontal', 'Interpreter', 'latex');
+hold on;
+grid on;
+bar = ['$$\bar{\lambda}$$'];
+set(gca, "FontSize", 16);
+set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
+s =set(gca, 'XTicklabel', { '$\theta_{1}$','$(\theta_{1} + \theta_{10})/2$','$\theta_{10}$'}, 'TickLabelInterpreter', 'latex');
+set(gca, 'YTick', [0]);
+xlabel("Ritz values $\theta$", Interpreter='latex');
+hold off;
+
+% Case 5:
+
+clear;
+B = full(mmread('email.mtx'));
+len = length(B);
+A = [zeros(len,len) B;B' zeros(len,len)];
+[V,lambda] = eig(A);
+d = diag(lambda);
+dim = length(A);
+
+% partial Rademacher vector
+b = [ones(len,1); zeros(len,1)];      
+b = b/norm(b);
+
+m = 10;                
+beta = zeros(m,1);
+alpha = zeros(m,1);
+
+K = zeros(dim,m+1);
+
+K(:,1) = b/norm(b);
+K(:,2) = A*K(:,1);
+alpha(1) = sum(K(:,2).*K(:,1));
+
+for i = 1:m-1
+	K(:,i+1) = K(:,i+1) - K(:,i).*alpha(i);
+	beta(i+1) = sqrt(sum(K(:,i+1).*K(:,i+1)));
+	K(:,i+1) = K(:,i+1)./beta(i+1);
+	K(:,i+2) = A*K(:,i+1) - K(:,i).*beta(i+1);
+	alpha(i+1) = sum(K(:,i+2).*K(:,i+1));
+end
+
+T1 = diag(alpha) + diag(beta(2:end),1) + diag(beta(2:end),-1);
+[~,D1] = eig(T1);
+D1 = diag(D1);
+
+lambdaM = D1(10);
+lambdam = D1(1);
+
+mu = V'*b;
+mu2 = zeros(dim);
+mu2(1) = mu(1)^2;
+for i = 2:dim
+    mu2(i) = mu(i)^2 + mu2(i-1);
+end
+
+index1 = find(D1 > (lambdaM+lambdam)/2, 1);
+D1_n = D1(1: index1 - 1);
+D1_p = D1(index1:10);
+
+subplot(2,1,1);
+stairs(d,mu2(:,1));
+set(gca, 'FontSize', 16);
+ylim([0,1]);
+xlabel("$t$",Interpreter = 'latex');
+ylabel("$\mu(t)$",Interpreter = 'latex')
+
+subplot(2,1,2);
+p_1_n = plot(D1_n,zeros(index1 - 1), '.r', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+legend([p_1_n(1), p_1_p(1)], '5 nodes $< 0$', '5 nodes $> 0$', 'Orientation', 'horizontal', 'Interpreter', 'latex');
+hold on;
+grid on;
+bar = ['$$\bar{\lambda}$$'];
+set(gca, "FontSize", 16);
+set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
+s =set(gca, 'XTicklabel', { '$\theta_{1} = -2816.842$','0','$\theta_{10} = 2816.842$'}, 'TickLabelInterpreter', 'latex');
+set(gca, 'YTick', [0]);
+xlabel("Ritz values $\theta$", Interpreter='latex');
+hold off;
+
+% Case 6:
+
+clear;
+Problem = load('wb-cs-stanford.mat');
+B = full(Problem.Problem.A);
+len = length(B);
+A = [zeros(len,len) B;B' zeros(len,len)];
+[U,S,V] = svd(B);
+d = diag(S);
+dim = length(A);
+
+% partial Rademacher vector
+
+b = [zeros(len,1); ones(len,1)];      
+b = b/norm(b);
+
+m = 10;                
+beta = zeros(m,1);
+alpha = zeros(m,1);
+
+K = zeros(dim,m+1);
+
+K(:,1) = b/norm(b);
+K(:,2) = A*K(:,1);
+alpha(1) = sum(K(:,2).*K(:,1));
+
+for i = 1:m-1
+	K(:,i+1) = K(:,i+1) - K(:,i).*alpha(i);
+	beta(i+1) = sqrt(sum(K(:,i+1).*K(:,i+1)));
+	K(:,i+1) = K(:,i+1)./beta(i+1);
+	K(:,i+2) = A*K(:,i+1) - K(:,i).*beta(i+1);
+	alpha(i+1) = sum(K(:,i+2).*K(:,i+1));
+end
+
+T1 = diag(alpha) + diag(beta(2:end),1) + diag(beta(2:end),-1);
+[~,D1] = eig(T1);
+D1 = diag(D1);
+
+lambdaM = D1(10);
+lambdam = D1(1);
+
+I = eye(9914);
+I = I(:,(9914:-1:1));
+
+mu = [U U*I;V -V*I]'*b/sqrt(2);
+d = [d;-I*d];
+mu2 = zeros(len * 2);
+mu2(1) = mu(1)^2;
+for i = 2:dim
+    mu2(i) = mu(i)^2 + mu2(i-1);
+end
+
+index1 = find(D1 > (lambdaM+lambdam)/2, 1);
+D1_n = D1(1: index1 - 1);
+D1_p = D1(index1:10);
+
+subplot(2,1,1);
+stairs([-39;sort(d,'ascend')],[0;mu2(:,1)]);
+set(gca, 'FontSize', 16);
+ylim([0,1]);
+xlabel("$t$",Interpreter = 'latex');
+ylabel("$\mu(t)$",Interpreter = 'latex')
+
+subplot(2,1,2);
+p_1_n = plot(D1_n,zeros(index1 - 1), '.r', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+legend([p_1_n(1), p_1_p(1)], '5 nodes $< 0$', '5 nodes $> 0$', 'Orientation', 'horizontal', 'Interpreter', 'latex');
+hold on;
+grid on;
+bar = ['$$\bar{\lambda}$$'];
+set(gca, "FontSize", 16);
+set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
+s =set(gca, 'XTicklabel', { '$\theta_{1} = -38.372$','0','$\theta_{10} = 38.372$' }, 'TickLabelInterpreter', 'latex');
+set(gca, 'YTick', [0]);
+xlabel("Ritz values $\theta$", Interpreter='latex');
+hold off;
+
 %% Section 5.2
 % Section 5.2.1 Synthetic matrix
 % Build test matrix.
-clear;
 rng(1);
 U = orth(randn(1000,1000));
 rng(2);
@@ -19,12 +474,14 @@ for i = 1:100
     Quad_vec1_syn(i) = 2*Lanczos_Quadrature(A, v1_syn, 100);
 end
 
+
 Quad_vec2_syn = zeros(100,1);
 for i = 1:100
     v2_syn = zeros(2000,1);
     v2_syn(1001:2000) = rademacher(1000,1);
     Quad_vec2_syn(i) = 2*Lanczos_Quadrature(A, v2_syn, 100);
 end
+
 
 Quad_vec3_syn = zeros(100,1);
 for i = 1:100
@@ -40,9 +497,9 @@ plot((1:1:100),Quad_vec3_syn, '-k');
 hold on;
 plot((1:1:100),exact.*ones(100,1), '-r');
 hold on;
-s1 = xlabel('trials', 'FontSize', 14);
-s2 = ylabel('estimation of tr($e^A$)', 'FontSize', 14);
-s3 = legend('upper $\mathbf{\tilde{z}}$', 'lower $\mathbf{\tilde{z}}$', 'full $\mathbf{z}$', 'exact computation');
+s1 = xlabel('trials', 'FontSize', 16);
+s2 = ylabel('quadratic form estimation', 'FontSize', 16);
+s3 = legend('upper $\mathbf{\tilde{z}}$', 'lower $\mathbf{\tilde{z}}$', 'full $\mathbf{z}$', 'exact computation', 'FontSize', 16);
 set(s1, 'Interpreter', 'latex')
 set(s2, 'Interpreter', 'latex')
 set(s3, 'Interpreter', 'latex')
@@ -50,6 +507,126 @@ hold off;
 sqrt(var(Quad_vec1_syn))
 sqrt(var(Quad_vec2_syn))
 sqrt(var(Quad_vec3_syn))
+
+num_iterations = 100;
+num_queries = (30:10:180);
+
+trials_Hutchpp = zeros(100,16);
+trials_Hutchinson = zeros(100,16);
+trials_Hutchinson_partial = zeros(100,16);
+for k = 1:16
+    for i = 1:100
+        trials_Hutchpp(i,k) = Hutchpp_rade(A, num_iterations, num_queries(k));
+    end
+end
+for k = 1:16
+    for i = 1:100
+        trials_Hutchinson(i,k) = Lanczos_Quadrature_2(A, rademacher(2000, num_queries(k)), num_iterations)/num_queries(k);
+    end
+end
+for k = 1:16
+    for i = 1:100
+        trials_Hutchinson_partial(i,k) = 2*Lanczos_Quadrature_2(A, [rademacher(1000, num_queries(k));zeros(1000,num_queries(k))], num_iterations)/num_queries(k);
+    end
+end
+
+errors_Hutchpp = abs((trials_Hutchpp - exact)/exact);
+errors_Hutchinson = abs((trials_Hutchinson - exact)/exact);
+errors_Hutchinson_partial = abs((trials_Hutchinson_partial - exact)/exact);
+
+median_Hutchinson = median(errors_Hutchinson);
+p25_Hutchinson = prctile(errors_Hutchinson, 25);
+p75_Hutchinson = prctile(errors_Hutchinson, 75);
+
+median_Hutchinson_partial = median(errors_Hutchinson_partial);
+p25_Hutchinson_partial = prctile(errors_Hutchinson_partial, 25);
+p75_Hutchinson_partial = prctile(errors_Hutchinson_partial, 75);
+
+median_Hutchpp = median(errors_Hutchpp);
+p25_Hutchpp = prctile(errors_Hutchpp, 25);
+p75_Hutchpp = prctile(errors_Hutchpp, 75);
+
+x = (30:10:180);
+
+figure;
+subplot(1,2,1);
+
+% 25th percentile
+loglog(x, p25_Hutchinson, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+% 75th percentile
+loglog(x, p75_Hutchinson, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+% median
+h1 = loglog(x, median_Hutchinson, '-', 'Color', [0.00, 0.45, 0.74], 'LineWidth', 2, 'DisplayName', 'Hutchinson');
+hold on;
+fill([x, fliplr(x)], [p25_Hutchinson, fliplr(p75_Hutchinson)], [0.70, 0.85, 0.95], ...
+    'FaceAlpha', 0.3, 'EdgeColor', 'none');
+hold on;
+% 25th percentile
+loglog(x, p25_Hutchinson_partial, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+% 75th percentile
+loglog(x, p75_Hutchinson_partial, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+% median
+h2 = loglog(x, median_Hutchinson_partial, '-', 'Color',[0, 0, 0] ,'LineWidth', 2,'DisplayName', 'Hutchinson (p.R.)');
+hold on;
+fill([x, fliplr(x)], [p25_Hutchinson_partial, fliplr(p75_Hutchinson_partial)], [0.80, 0.80, 0.80], ...
+    'FaceAlpha', 0.3, 'EdgeColor', 'none');
+hold on;
+
+s4 = xlabel('Number of queries, $N$','FontSize', 16);
+s5 = ylabel('Relative error of stochastic trace estimator','FontSize', 16);
+s6 = legend([h1,h2],'FontSize',16);
+set(s4, 'Interpreter', 'latex');
+set(s5, 'Interpreter', 'latex');
+set(s6, 'Interpreter', 'latex');
+grid on;
+xlim([30,180]);
+
+legend([h1,h2]);
+hold on;
+
+subplot(1,2,2);
+
+% 25th percentile
+loglog(x, p25_Hutchpp, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+% 75th percentile
+loglog(x, p75_Hutchpp, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+% median
+h4 = loglog(x, median_Hutchpp, '-', 'Color',[0.85, 0.33, 0.10] ,'LineWidth', 2,'DisplayName', 'Hutch++');
+hold on;
+fill([x, fliplr(x)], [p25_Hutchpp, fliplr(p75_Hutchpp)], [0.95, 0.80, 0.70], ...
+    'FaceAlpha', 0.3, 'EdgeColor', 'none');
+hold on;
+
+
+% 25th percentile
+loglog(x, p25_Hutchinson_partial, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+% 75th percentile
+loglog(x, p75_Hutchinson_partial, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+% median
+h3 = loglog(x, median_Hutchinson_partial, '-', 'Color', [0.00, 0.00, 0.00], 'LineWidth', 2, ...
+    'MarkerFaceColor', [0.00, 0.00, 0.00], 'DisplayName', 'Hutchinson (p.R.)');
+hold on;
+fill([x, fliplr(x)], [p25_Hutchinson_partial, fliplr(p75_Hutchinson_partial)], [0.80, 0.80, 0.80], ...
+    'FaceAlpha', 0.3, 'EdgeColor', 'none');
+hold on;
+grid on;
+xlim([30,180]);
+
+s7 = xlabel('Number of queries, $N$','FontSize', 16);
+s8 = ylabel('Relative error of stochastic trace estimator','FontSize', 16);
+s9 = legend([h4,h3],'FontSize',16);
+set(s7, 'Interpreter', 'latex');
+set(s8, 'Interpreter', 'latex');
+set(s9, 'Interpreter', 'latex');
+hold off;
 
 % Section 5.2.2 email dataset
 clear;
@@ -67,6 +644,7 @@ for i = 1:100
     Quad_vec1_email(i) = 2*Lanczos_Quadrature(A*0.5/lambda_max, v1_email, 100);
 end
 
+
 Quad_vec2_email = zeros(100,1);
 for i = 1:100
     v2_email = zeros(2*len,1);
@@ -74,11 +652,13 @@ for i = 1:100
     Quad_vec2_email(i) = 2*Lanczos_Quadrature(A*0.5/lambda_max, v2_email, 100);
 end
 
+
 Quad_vec3_email = zeros(100,1);
 for i = 1:100
     v3_email = rademacher(2*len,1);
     Quad_vec3_email(i) = Lanczos_Quadrature(A*0.5/lambda_max, v3_email, 100);
 end
+
 
 plot((1:1:100),Quad_vec1_email, 'sk');
 hold on;
@@ -88,20 +668,101 @@ plot((1:1:100),Quad_vec3_email, '-k');
 hold on;
 plot((1:1:100),exact.*ones(100,1), '-r');
 hold on;
-s4 = xlabel('trials', 'FontSize', 14);
-s5 = ylabel('estimation of tr($e^{0.5A/\lambda_{max}}$)', 'FontSize', 14);
-s6 = legend('upper $\mathbf{\tilde{z}}$', 'lower $\mathbf{\tilde{z}}$', 'full $\mathbf{z}$', 'exact computation');
+s1 = xlabel('trials', 'FontSize', 16);
+s2 = ylabel('quadratic form estimation', 'FontSize', 16);
+s3 = legend('upper $\mathbf{\tilde{z}}$', 'lower $\mathbf{\tilde{z}}$', 'full $\mathbf{z}$', 'exact computation', 'FontSize', 16);
 sqrt(var(Quad_vec1_email))
 sqrt(var(Quad_vec2_email))
 sqrt(var(Quad_vec3_email))
-set(s4, 'Interpreter', 'latex')
-set(s5, 'Interpreter', 'latex')
-set(s6, 'Interpreter', 'latex')
+set(s1, 'Interpreter', 'latex')
+set(s2, 'Interpreter', 'latex')
+set(s3, 'Interpreter', 'latex')
 hold off;
 
 sqrt(var(Quad_vec1_email))
 sqrt(var(Quad_vec2_email))
 sqrt(var(Quad_vec3_email))
+
+num_iterations = 100;
+num_queries = (30:10:180);
+
+trials_Hutchpp = zeros(100,16);
+trials_Hutchinson = zeros(100,16);
+trials_Hutchinson_partial = zeros(100,16);
+for k = 1:16
+    for i = 1:100
+        trials_Hutchpp(i,k) = Hutchpp_rade(A, num_iterations, num_queries(k));
+    end
+end
+for k = 1:16
+    for i = 1:100
+        trials_Hutchinson(i,k) = Lanczos_Quadrature_2(A, rademacher(2010, num_queries(k)), num_iterations)/num_queries(k);
+    end
+end
+for k = 1:16
+    for i = 1:100
+        trials_Hutchinson_partial(i,k) = 2*Lanczos_Quadrature_2(A, [rademacher(1005, num_queries(k));zeros(1005,num_queries(k))], num_iterations)/num_queries(k);
+    end
+end
+
+errors_Hutchpp = abs((trials_Hutchpp - exact)/exact);
+errors_Hutchinson = abs((trials_Hutchinson - exact)/exact);
+errors_Hutchinson_partial = abs((trials_Hutchinson_partial - exact)/exact);
+
+median_Hutchinson = median(errors_Hutchinson);
+p25_Hutchinson = prctile(errors_Hutchinson, 25);
+p75_Hutchinson = prctile(errors_Hutchinson, 75);
+
+median_Hutchinson_partial = median(errors_Hutchinson_partial);
+p25_Hutchinson_partial = prctile(errors_Hutchinson_partial, 25);
+p75_Hutchinson_partial = prctile(errors_Hutchinson_partial, 75);
+
+median_Hutchpp = median(errors_Hutchpp);
+p25_Hutchpp = prctile(errors_Hutchpp, 25);
+p75_Hutchpp = prctile(errors_Hutchpp, 75);
+
+x = (30:10:180);
+
+figure;
+
+loglog(x, p25_Hutchinson, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+loglog(x, p75_Hutchinson, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+h1 = loglog(x, median_Hutchinson, '-', 'Color', [0.00, 0.45, 0.74], 'LineWidth', 2, 'DisplayName', 'Hutchinson');
+hold on;
+fill([x, fliplr(x)], [p25_Hutchinson, fliplr(p75_Hutchinson)], [0.70, 0.85, 0.95], ...
+    'FaceAlpha', 0.3, 'EdgeColor', 'none');
+hold on;
+loglog(x, p25_Hutchinson_partial, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+loglog(x, p75_Hutchinson_partial, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+h2 = loglog(x, median_Hutchinson_partial, '-', 'Color',[0, 0, 0] ,'LineWidth', 2,'DisplayName', 'Hutchinson (p.R.)');
+hold on;
+fill([x, fliplr(x)], [p25_Hutchinson_partial, fliplr(p75_Hutchinson_partial)], [0.80, 0.80, 0.80], ...
+    'FaceAlpha', 0.3, 'EdgeColor', 'none');
+hold on;
+loglog(x, p25_Hutchpp, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+loglog(x, p75_Hutchpp, '-', 'Color', [0.6, 0.6, 0.6], 'LineWidth', 1);
+hold on;
+h3 = loglog(x, median_Hutchpp, '-', 'Color',[0.85, 0.33, 0.10] ,'LineWidth', 2,'DisplayName', 'Hutch++');
+hold on;
+
+fill([x, fliplr(x)], [p25_Hutchpp, fliplr(p75_Hutchpp)], [0.95, 0.80, 0.70], ...
+    'FaceAlpha', 0.3, 'EdgeColor', 'none');
+hold on;
+
+xlim([30,180]);
+s4 = xlabel('Number of queries, $N$','FontSize', 16);
+s5 = ylabel('Relative error of stochastic trace estimator','FontSize', 16);
+s6 = legend([h3,h1,h2],'FontSize',16);
+set(s4, 'Interpreter', 'latex');
+set(s5, 'Interpreter', 'latex');
+set(s6, 'Interpreter', 'latex');
+
+hold off;
 
 % Section 5.2.3 movie dataset
 clear;
@@ -118,6 +779,7 @@ for i = 1:100
     Quad_vec1_movie(i) = 2*Lanczos_Quadrature(A/lambdamax, v1_movie, 100) - (n1-n2)*exp(0);
 end
 
+
 Quad_vec2_movie = zeros(100,1);
 for i = 1:100
     v2_movie = zeros(n1+n2,1);
@@ -125,11 +787,13 @@ for i = 1:100
     Quad_vec2_movie(i) = 2*Lanczos_Quadrature(A/lambdamax, v2_movie, 100) + (n1-n2)*exp(0);
 end
 
+
 Quad_vec3_movie = zeros(100,1);
 for i = 1:100
     v3_movie = rademacher(n1+n2,1);
     Quad_vec3_movie(i) = Lanczos_Quadrature(A/lambdamax, v3_movie, 100);
 end
+
 
 plot((1:1:100),Quad_vec1_movie, 'sk');
 hold on;
@@ -137,12 +801,12 @@ plot((1:1:100),Quad_vec2_movie, 'ok');
 hold on;
 plot((1:1:100),Quad_vec3_movie, '-k');
 hold on;
-s7 = xlabel('trials', 'FontSize', 14);
-s8 = ylabel('estimation of tr($e^{A/\lambda_{max}}$)', 'FontSize', 14);
-s9 = legend('upper $\mathbf{\tilde{z}}$', 'lower $\mathbf{\tilde{z}}$', 'full $\mathbf{z}$');
-set(s7, 'Interpreter', 'latex')
-set(s8, 'Interpreter', 'latex')
-set(s9, 'Interpreter', 'latex')
+s1 = xlabel('trials', 'FontSize', 16);
+s2 = ylabel('quadratic form estimation', 'FontSize', 16);
+s3 = legend('upper $\mathbf{\tilde{z}}$', 'lower $\mathbf{\tilde{z}}$', 'full $\mathbf{z}$', 'FontSize', 16);
+set(s1, 'Interpreter', 'latex')
+set(s2, 'Interpreter', 'latex')
+set(s3, 'Interpreter', 'latex')
 sqrt(var(Quad_vec1_movie))
 sqrt(var(Quad_vec2_movie))
 sqrt(var(Quad_vec3_movie))
