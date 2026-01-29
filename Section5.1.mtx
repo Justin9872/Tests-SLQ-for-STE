@@ -1,5 +1,6 @@
 %% Section 5.1
 % case 1:
+
 dim = 50;
 d = zeros(dim,1);
 for i = 1:dim
@@ -49,10 +50,11 @@ D1_p = D1(index1:10);
 
 subplot(2,1,1);
 stairs([0;d],[0;mu2(1:dim,1)]);
-set(gca, 'FontSize', 12);
+set(gca, 'FontSize', 16);
 ylim([0,1]);
 xlabel("$t$",Interpreter = 'latex');
 ylabel("$\mu(t)$",Interpreter = 'latex')
+
 
 subplot(2,1,2);
 p_1_n = plot(D1_n,zeros(index1 - 1), '.r', 'MarkerSize', 12);
@@ -61,18 +63,19 @@ hold on;
 p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
 ylim([-0.1,0.1]);
 hold on;
-legend([p_1_n(1), p_1_p(1)], '5 nodes <(\theta_{1}+\theta_{10})/2', '5 nodes > (\theta_{1}+\theta_{10})/2', 'Orientation', 'horizontal');
+legend([p_1_n(1), p_1_p(1)], '5 nodes $<(\theta_{1}+\theta_{10})/2$', '5 nodes $>(\theta_{1}+\theta_{10})/2$', 'Orientation', 'horizontal', 'Interpreter', 'latex');
 hold on;
 grid on;
 bar = ['$$\bar{\lambda}$$'];
-set(gca, "FontSize", 12);
+set(gca, "FontSize", 16);
 set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
-s =set(gca, 'XTicklabel', { '\theta_{1}','(\theta_{1} + \theta_{10})/2','\theta_{10}'});
+s =set(gca, 'XTicklabel', { '$\theta_{1}$','$(\theta_{1} + \theta_{10})/2$','$\theta_{10}$'}, 'TickLabelInterpreter', 'latex');
 set(gca, 'YTick', [0]);
 xlabel("Ritz values $\theta$", Interpreter='latex');
 hold off;
 
 % case 2:
+
 clear;
 dim = 50;
 d = zeros(dim,1);
@@ -123,10 +126,11 @@ D1_p = D1(index1:10);
 
 subplot(2,1,1);
 stairs([0;d],[0;mu2(1:dim,1)]);
-set(gca, 'FontSize', 12);
+set(gca, 'FontSize', 16);
 ylim([0,1]);
 xlabel("$t$",Interpreter = 'latex');
 ylabel("$\mu(t)$",Interpreter = 'latex')
+
 
 subplot(2,1,2);
 p_1_n = plot(D1_n,zeros(index1 - 1), '.r', 'MarkerSize', 12);
@@ -135,18 +139,19 @@ hold on;
 p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
 ylim([-0.1,0.1]);
 hold on;
-legend([p_1_n(1), p_1_p(1)], '9 nodes <(\theta_{1}+\theta_{10})/2', '1 node > (\theta_{1}+\theta_{10})/2', 'Orientation', 'horizontal');
+legend([p_1_n(1), p_1_p(1)], '9 nodes $<(\theta_{1}+\theta_{10})/2$', '1 node $>(\theta_{1}+\theta_{10})/2$', 'Orientation', 'horizontal','Interpreter', 'latex');
 hold on;
 grid on;
 bar = ['$$\bar{\lambda}$$'];
-set(gca, "FontSize", 12);
+set(gca, "FontSize", 16);
 set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
-s =set(gca, 'XTicklabel', { '\theta_{1}','(\theta_{1} + \theta_{10})/2','\theta_{10}'});
+s =set(gca, 'XTicklabel', { '$\theta_{1}$','$(\theta_{1} + \theta_{10})/2$','$\theta_{10}$'}, 'TickLabelInterpreter', 'latex');
 set(gca, 'YTick', [0]);
 xlabel("Ritz values $\theta$", Interpreter='latex');
 hold off;
 
 % case 3:
+
 clear;
 dim = 50;
 d = zeros(dim,1);
@@ -198,7 +203,7 @@ D1_p = D1(index1:10);
 
 subplot(2,1,1);
 stairs([0;d],[0;mu2(1:dim,1)]);
-set(gca, 'FontSize', 12);
+set(gca, 'FontSize', 16);
 ylim([0,1]);
 xlabel("$t$",Interpreter = 'latex');
 ylabel("$\mu(t)$",Interpreter = 'latex')
@@ -210,18 +215,19 @@ hold on;
 p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
 ylim([-0.1,0.1]);
 hold on;
-legend([p_1_n(1), p_1_p(1)], '5 nodes <(\theta_{1}+\theta_{10})/2', '5 nodes > (\theta_{1}+\theta_{10})/2', 'Orientation', 'horizontal');
+legend([p_1_n(1), p_1_p(1)], '5 nodes $<(\theta_{1}+\theta_{10})/2$', '5 nodes $>(\theta_{1}+\theta_{10})/2$', 'Orientation', 'horizontal','Interpreter', 'latex');
 hold on;
 grid on;
 bar = ['$$\bar{\lambda}$$'];
-set(gca, "FontSize", 12);
+set(gca, "FontSize", 16);
 set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
-s =set(gca, 'XTicklabel', { '\theta_{1}','(\theta_{1} + \theta_{10})/2','\theta_{10}'});
+s =set(gca, 'XTicklabel', { '$\theta_{1}$','$(\theta_{1} + \theta_{10})/2$','$\theta_{10}$'}, 'TickLabelInterpreter', 'latex');
 set(gca, 'YTick', [0]);
 xlabel("Ritz values $\theta$", Interpreter='latex');
 hold off;
 
 % case 4:
+
 clear;
 load('nd3k.mat');
 A = Problem.A;
@@ -272,7 +278,7 @@ D1_p = D1(index1:10);
 
 subplot(2,1,1);
 stairs([0;diag(D)],[0;mu2(1:dim,1)]);
-set(gca, 'FontSize', 12);
+set(gca, 'FontSize', 16);
 ylim([0,1]);
 xlabel("$t$",Interpreter = 'latex');
 ylabel("$\mu(t)$",Interpreter = 'latex')
@@ -284,13 +290,169 @@ hold on;
 p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
 ylim([-0.1,0.1]);
 hold on;
-legend([p_1_n(1), p_1_p(1)], '5 nodes <(\theta_{1}+\theta_{10})/2', '5 nodes > (\theta_{1}+\theta_{10})/2', 'Orientation', 'horizontal');
+legend([p_1_n(1), p_1_p(1)], '5 nodes $<(\theta_{1}+\theta_{10})/2$', '5 nodes $>(\theta_{1}+\theta_{10})/2$', 'Orientation', 'horizontal', 'Interpreter', 'latex');
 hold on;
 grid on;
 bar = ['$$\bar{\lambda}$$'];
-set(gca, "FontSize", 12);
+set(gca, "FontSize", 16);
 set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
-s =set(gca, 'XTicklabel', { '\theta_{1}','(\theta_{1} + \theta_{10})/2','\theta_{10}'});
+s =set(gca, 'XTicklabel', { '$\theta_{1}$','$(\theta_{1} + \theta_{10})/2$','$\theta_{10}$'}, 'TickLabelInterpreter', 'latex');
+set(gca, 'YTick', [0]);
+xlabel("Ritz values $\theta$", Interpreter='latex');
+hold off;
+
+% case 5:
+
+clear;
+B = full(mmread('email.mtx'));
+len = length(B);
+A = [zeros(len,len) B;B' zeros(len,len)];
+[V,lambda] = eig(A);
+d = diag(lambda);
+dim = length(A);
+
+% partial Rademacher vector
+b = [ones(len,1); zeros(len,1)];      
+b = b/norm(b);
+
+m = 10;                
+beta = zeros(m,1);
+alpha = zeros(m,1);
+
+K = zeros(dim,m+1);
+
+K(:,1) = b/norm(b);
+K(:,2) = A*K(:,1);
+alpha(1) = sum(K(:,2).*K(:,1));
+
+for i = 1:m-1
+	K(:,i+1) = K(:,i+1) - K(:,i).*alpha(i);
+	beta(i+1) = sqrt(sum(K(:,i+1).*K(:,i+1)));
+	K(:,i+1) = K(:,i+1)./beta(i+1);
+	K(:,i+2) = A*K(:,i+1) - K(:,i).*beta(i+1);
+	alpha(i+1) = sum(K(:,i+2).*K(:,i+1));
+end
+
+T1 = diag(alpha) + diag(beta(2:end),1) + diag(beta(2:end),-1);
+[~,D1] = eig(T1);
+D1 = diag(D1);
+
+lambdaM = D1(10);
+lambdam = D1(1);
+
+mu = V'*b;
+mu2 = zeros(dim);
+mu2(1) = mu(1)^2;
+for i = 2:dim
+    mu2(i) = mu(i)^2 + mu2(i-1);
+end
+
+index1 = find(D1 > (lambdaM+lambdam)/2, 1);
+D1_n = D1(1: index1 - 1);
+D1_p = D1(index1:10);
+
+subplot(2,1,1);
+stairs(d,mu2(:,1));
+set(gca, 'FontSize', 16);
+ylim([0,1]);
+xlabel("$t$",Interpreter = 'latex');
+ylabel("$\mu(t)$",Interpreter = 'latex')
+
+subplot(2,1,2);
+p_1_n = plot(D1_n,zeros(index1 - 1), '.r', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+legend([p_1_n(1), p_1_p(1)], '5 nodes $< 0$', '5 nodes $> 0$', 'Orientation', 'horizontal', 'Interpreter', 'latex');
+hold on;
+grid on;
+bar = ['$$\bar{\lambda}$$'];
+set(gca, "FontSize", 16);
+set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
+s =set(gca, 'XTicklabel', { '$\theta_{1} = -2816.842$','0','$\theta_{10} = 2816.842$'}, 'TickLabelInterpreter', 'latex');
+set(gca, 'YTick', [0]);
+xlabel("Ritz values $\theta$", Interpreter='latex');
+hold off;
+
+% case 6:
+
+clear;
+Problem = load('wb-cs-stanford.mat');
+B = full(Problem.Problem.A);
+len = length(B);
+A = [zeros(len,len) B;B' zeros(len,len)];
+[U,S,V] = svd(B);
+d = diag(S);
+dim = length(A);
+
+% partial Rademacher vector
+
+b = [zeros(len,1); ones(len,1)];      
+b = b/norm(b);
+
+m = 10;                
+beta = zeros(m,1);
+alpha = zeros(m,1);
+
+K = zeros(dim,m+1);
+
+K(:,1) = b/norm(b);
+K(:,2) = A*K(:,1);
+alpha(1) = sum(K(:,2).*K(:,1));
+
+for i = 1:m-1
+	K(:,i+1) = K(:,i+1) - K(:,i).*alpha(i);
+	beta(i+1) = sqrt(sum(K(:,i+1).*K(:,i+1)));
+	K(:,i+1) = K(:,i+1)./beta(i+1);
+	K(:,i+2) = A*K(:,i+1) - K(:,i).*beta(i+1);
+	alpha(i+1) = sum(K(:,i+2).*K(:,i+1));
+end
+
+T1 = diag(alpha) + diag(beta(2:end),1) + diag(beta(2:end),-1);
+[~,D1] = eig(T1);
+D1 = diag(D1);
+
+lambdaM = D1(10);
+lambdam = D1(1);
+
+I = eye(9914);
+I = I(:,(9914:-1:1));
+
+mu = [U U*I;V -V*I]'*b/sqrt(2);
+d = [d;-I*d];
+mu2 = zeros(len * 2);
+mu2(1) = mu(1)^2;
+for i = 2:dim
+    mu2(i) = mu(i)^2 + mu2(i-1);
+end
+
+index1 = find(D1 > (lambdaM+lambdam)/2, 1);
+D1_n = D1(1: index1 - 1);
+D1_p = D1(index1:10);
+
+subplot(2,1,1);
+stairs([-39;sort(d,'ascend')],[0;mu2(:,1)]);
+set(gca, 'FontSize', 16);
+ylim([0,1]);
+xlabel("$t$",Interpreter = 'latex');
+ylabel("$\mu(t)$",Interpreter = 'latex')
+
+subplot(2,1,2);
+p_1_n = plot(D1_n,zeros(index1 - 1), '.r', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+p_1_p = plot(D1_p,zeros(11 - index1), '.b', 'MarkerSize', 12);
+ylim([-0.1,0.1]);
+hold on;
+legend([p_1_n(1), p_1_p(1)], '5 nodes $< 0$', '5 nodes $> 0$', 'Orientation', 'horizontal', 'Interpreter', 'latex');
+hold on;
+grid on;
+bar = ['$$\bar{\lambda}$$'];
+set(gca, "FontSize", 16);
+set(gca, 'XTick', [lambdam, (lambdaM+lambdam)/2, lambdaM]);
+s =set(gca, 'XTicklabel', { '$\theta_{1} = -38.372$','0','$\theta_{10} = 38.372$' }, 'TickLabelInterpreter', 'latex');
 set(gca, 'YTick', [0]);
 xlabel("Ritz values $\theta$", Interpreter='latex');
 hold off;
